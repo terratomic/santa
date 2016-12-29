@@ -1,33 +1,16 @@
 body {
     width: 100%;
     height: 100%;
+    background-position: top center;
     background-color: #9cd2d4;
     background-image: url("background.png");
+    overflow: hidden;
 }
 
 h1 {
     color: #edeef0;
     margin-left: 20px;
 }
-
-.field{
-
-  border-radius: 10px;
-  border:2px solid black;
-  width: 250px;
-  height: 50px;
-  font-size: 30px;
-  font-family:Calibri,sans-serif;
-  position: fixed;
-  top: 53%;
-  left: 50%;
-  transform: translate(-50%, 0);
-  text-align: center;
-  overflow:hidden;
-  white-space: nowrap;
-  outline: none;
-}
-
 
 .question{
   text-align: center;
@@ -38,6 +21,56 @@ h1 {
   font-family:Calibri,sans-serif;
   transform: translate(-50%, -50%);
 }
+
+.form{
+
+  position: fixed;
+  top: 57%;
+  left: 50%;
+  transform: translate(-50%, 0);
+  overflow:hidden;
+  white-space: nowrap;
+  outline: none;
+  font-family:Calibri,sans-serif;
+  font-size: 20px;
+
+}
+
+.person{
+
+  margin: 10px 0;
+  display:block;
+}
+
+.field{
+margin-right: 10px;
+  border:2px solid black;
+  width: 200px;
+  height: 40px;
+  font-size: 20px;
+  font-family:Calibri,sans-serif;
+  text-align: center;
+  overflow:hidden;
+  white-space: nowrap;
+  outline: none;
+  background-color:rgba(0,0,0,0);
+}
+
+#button{
+
+}
+
+
+#footer{
+  position:fixed;
+   left:0%;
+   bottom:0%;
+   height:50px;
+   width:100%;
+   text-align: center;
+   font-family:Calibri,sans-serif;
+}
+
 
 #snowflakeContainer {
     position: absolute;

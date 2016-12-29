@@ -4,22 +4,38 @@
 </head>
 
 <body>
-  <h1>Welcome to Meteor!</h1>
 
   <div id="snowflakeContainer">
       <p class="snowflake">*</p>
   </div>
 
   <p class = "question">
-      How many santas?
+      Enter your santas! <br />
   </p>
-  <p class = "field" contenteditable="true">
+  <form class = "form">
+          &nbsp Name &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+          &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp Email
+    <div class = "person">
+      <input class = "field" type="text" />
+      <input class = "field" type = "text"/ />
+    </div>
+    <div class = "person">
+      <input class = "field" type="text" />
+      <input class = "field" type = "text"/ />
+    </div>
 
-  </p>
+    <button type = "button" id = "button">
+      Add another Santa
+    </button>
+  </form>
+
+
 
 <script src="snow.js"></script>
 
-  <p>
-    Snow credits: https://www.kirupa.com/html5/the_falling_snow_effect.htm
-  </p>
+
 </body>
+
+<footer id = "footer">
+  Snow: https://www.kirupa.com/html5/the_falling_snow_effect.htm
+</footer>

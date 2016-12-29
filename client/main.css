@@ -1,15 +1,15 @@
 body {
-    width: 100%;
-    height: 100%;
-    background-position: top center;
-    background-color: #9cd2d4;
-    background-image: url("background.png");
-    overflow: hidden;
+  width: 100%;
+  height: 100%;
+  background-position: top center;
+  background-color: #9cd2d4;
+  background-image: url("background.png");
+  overflow: hidden;
 }
 
 h1 {
-    color: #edeef0;
-    margin-left: 20px;
+  color: #edeef0;
+  margin-left: 20px;
 }
 
 .question{
@@ -43,50 +43,72 @@ h1 {
 }
 
 .field{
-margin-right: 10px;
+  padding-left: 5px;
+  margin-right: 10px;
   border:2px solid black;
   width: 200px;
   height: 40px;
   font-size: 20px;
   font-family:Calibri,sans-serif;
-  text-align: center;
   overflow:hidden;
   white-space: nowrap;
   outline: none;
   background-color:rgba(0,0,0,0);
 }
 
-#button{
-
+#add{
+  background-color:rgba(0,0,0,0);
+  color: #B81215;
+  border: none;
+  outline-style: none;
 }
 
+#add:hover{
+  text-decoration: underline;
+}
+
+#submit{
+  margin-top: 10px;
+  height:30px;
+  width:80px;
+  background-color: #B81215;
+  color: white;
+  border: #B81215;
+  outline-style: none;
+  font-family:Calibri,sans-serif;
+  font-size: 20px;
+}
+
+#submit:hover{
+  background-color: #ea2e31;
+}
 
 #footer{
   position:fixed;
-   left:0%;
-   bottom:0%;
-   height:50px;
-   width:100%;
-   text-align: center;
-   font-family:Calibri,sans-serif;
+  left:0%;
+  bottom:0%;
+  height:50px;
+  width:100%;
+  text-align: center;
+  font-family:Calibri,sans-serif;
 }
 
 
 #snowflakeContainer {
-    position: absolute;
-    left: 0px;
-    top: 0px;
+  position: absolute;
+  left: 0px;
+  top: 0px;
 }
 .snowflake {
-    padding-left: 15px;
-    font-family: Cambria, Georgia, serif;
-    font-size: 14px;
-    line-height: 24px;
-    position: fixed;
-    color: #FFFFFF;
-    user-select: none;
-    z-index: 1000;
+  padding-left: 15px;
+  font-family: Cambria, Georgia, serif;
+  font-size: 14px;
+  line-height: 24px;
+  position: fixed;
+  color: #FFFFFF;
+  user-select: none;
+  z-index: 1000;
 }
 .snowflake:hover {
-    cursor: default;
+  cursor: default;
 }

@@ -12,17 +12,13 @@
   <p class = "question">
       Enter your Santas! <br />
   </p>
-  <form class = "form" method="post">
+  <form class = "form" method="post" action="santas">
           &nbsp Name &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
           &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
           &nbsp&nbsp&nbsp&nbsp Email
     <div class = "person">
-      <input class = "field" type="text" />
-      <input class = "field" type = "text"/ />
-    </div>
-    <div class = "person">
-      <input class = "field" type="text" />
-      <input class = "field" type = "text"/ />
+      <input class = "field" type="text" name = "name"/>
+      <input class = "field" type = "text" name = "email"/ />
     </div>
 
     <button type = "button" id = "add">
@@ -30,9 +26,8 @@
     </button>
     <br />
 
-    <button type = "button" id = "submit">
-      Submit
-    </button>
+    <input type = "submit" value = "Submit" id = "submit">
+
   </form>
 
 

@@ -17,7 +17,7 @@ var port = process.env.PORT || 8080;        // set our port
 
 var mongoose   = require('mongoose');
 mongoose.connect('mongodb://localhost:27017/'); // connect to our database
-var mailOptions = require('./models/email')
+var Email = require('./models/email')
 
 // ROUTES FOR OUR API
 // =============================================================================

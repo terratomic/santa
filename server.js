@@ -17,7 +17,7 @@ var port = process.env.PORT || 8080;        // set our port
 
 var mongoose   = require('mongoose');
 mongoose.connect('mongodb://localhost:27017/'); // connect to our database
-//var Session = require('./models/session')
+var mailOptions = require('./models/email')
 
 // ROUTES FOR OUR API
 // =============================================================================
@@ -56,3 +56,18 @@ app.use('/api', router);
 // =============================================================================
 app.listen(port);
 console.log('Magic happens on port ' + port);
+
+//--------------------------SMPT EMAIL SERVER-----------------------------
+
+var nodemailer = require('nodemailer');
+
+// create reusable transporter object using the default SMTP transport
+var transporter = nodemailer.createTransport('smtps://user%40gmail.com:pass@smtp.gmail.com');
+
+// send mail with defined transport object
+transporter.sendMail(mailOptions, function(error, info){
+    if(error){
+        return console.log(error);
+    }
+    console.log('Message sent: ' + info.response);
+});

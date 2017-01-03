@@ -50,19 +50,21 @@ router.use(function(req, res, next) {
 // on routes that end in /bears
 // ----------------------------------------------------
 // create a session in session database
-router.post('/',function(req, res) {
+app.post('/submit',function(req, res) {
 
-    res.json({message: req.body.users})
-
+  console.log(req.body.name);
+  console.log(req.body.email);
 });
 
 // REGISTER OUR ROUTES -------------------------------
 // all of our routes will be prefixed with /api
-app.use('/api', router);
+//app.use('/api', router);
 
 // START THE SERVER
 // =============================================================================
-app.listen(port);
+app.listen(port,function(){
+  console.log('Server running at '+port);
+});
 console.log('Magic happens on port ' + port);
 
 //--------------------------SMPT EMAIL SERVER-----------------------------

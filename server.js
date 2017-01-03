@@ -26,8 +26,21 @@ app.get(function (req, res) {
 var port = process.env.PORT || 8000;        // set our port
 
 var mongoose   = require('mongoose');
-mongoose.connect('mongodb://localhost:27017/'); // connect to our database
-var Email = require('./models/email')
+var Email = require('./models/email');
+var Circle = require('./models/circle');
+
+//========================================Job queue
+var mongodb = require('mongodb');
+var mongoDbQueue = require('mongodb-queue');
+
+var con = 'mongodb://localhost:27017/';
+
+var myQueue;
+mongodb.MongoClient.connect(con, function(err, db) {
+    myQueue = mongoDbQueue(db, 'my-queue');
+})
+
+
 
 // ROUTES FOR OUR API
 // =============================================================================
@@ -40,25 +53,18 @@ router.use(function(req, res, next) {
   next(); // make sure we go to the next routes and don't stop here
 });
 
-// test route to make sure everything is working (accessed at GET http://localhost:8080/api)
-/*router.get('/', function(req, res) {
-  res.json({ message: 'hooray! welcome to our api!' });
-});*/
-
-// more routes for our API will happen here
-
-// on routes that end in /bears
-// ----------------------------------------------------
-// create a session in session database
 app.post('/submit',function(req, res) {
 
   console.log(req.body.name);
   console.log(req.body.email);
+
+  var hi = "hi";
+  myQueue.add("hi", function(err, id) {
+    // err handling ...
+    console.log('Added message with id = %s', id)
 });
 
-// REGISTER OUR ROUTES -------------------------------
-// all of our routes will be prefixed with /api
-//app.use('/api', router);
+});
 
 // START THE SERVER
 // =============================================================================

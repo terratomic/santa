@@ -15,7 +15,7 @@ h1 {
 .question{
   text-align: center;
   position: fixed;
-  top: 50%;
+  top: 47%;
   left: 50%;
   font-size: 30px;
   font-family:Calibri,sans-serif;
@@ -25,7 +25,7 @@ h1 {
 .form{
 
   position: fixed;
-  top: 57%;
+  top: 54%;
   left: 50%;
   transform: translate(-50%, 0);
   overflow:hidden;
@@ -44,6 +44,7 @@ h1 {
 
 .field{
   padding-left: 5px;
+  margin-bottom: 8px;
   margin-right: 10px;
   border:2px solid black;
   width: 200px;

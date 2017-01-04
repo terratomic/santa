@@ -85,13 +85,11 @@ app.post('/submit',function(req, res) {
   console.log(req.body.name);
   console.log(req.body.email);
 
-
-  var circle = new Circle();
-  circle.names = req.body.name;
-  circle.emails = req.body.email;
-
-  myQueue.add(circle, function(err, id) {
+  myQueue.add({name:req.body.name, email:req.body.email}, function(err, id) {
     // err handling ...
-    console.log('Added message with id = %s', id)
+    if(err){
+      console.log(err);
+    }
+    console.log('Added message with id = %s', id);
   });
 });

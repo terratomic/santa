@@ -33,11 +33,11 @@ var Circle = require('./models/circle');
 var mongodb = require('mongodb');
 var mongoDbQueue = require('mongodb-queue');
 
-var con = 'mongodb://localhost:27017/';
+var con = 'mongodb://localhost:27017/santa';
 
 var myQueue;
 mongodb.MongoClient.connect(con, function(err, db) {
-    myQueue = mongoDbQueue(db, 'my-queue');
+  myQueue = mongoDbQueue(db, 'my-queue');
 })
 
 
@@ -53,18 +53,7 @@ router.use(function(req, res, next) {
   next(); // make sure we go to the next routes and don't stop here
 });
 
-app.post('/submit',function(req, res) {
 
-  console.log(req.body.name);
-  console.log(req.body.email);
-
-  var hi = "hi";
-  myQueue.add("hi", function(err, id) {
-    // err handling ...
-    console.log('Added message with id = %s', id)
-});
-
-});
 
 // START THE SERVER
 // =============================================================================
@@ -84,10 +73,25 @@ var transporter = nodemailer.createTransport('smtps://user%40gmail.com:pass@smtp
 
 function sendMail(){
 transporter.sendMail(mailOptions, function(error, info){
-    if(error){
-        return console.log(error);
-    }
-    console.log('Message sent: ' + info.response);
+if(error){
+return console.log(error);
+}
+console.log('Message sent: ' + info.response);
 });
 }
 */
+app.post('/submit',function(req, res) {
+
+  console.log(req.body.name);
+  console.log(req.body.email);
+
+
+  var circle = new Circle();
+  circle.names = req.body.name;
+  circle.emails = req.body.email;
+
+  myQueue.add(circle, function(err, id) {
+    // err handling ...
+    console.log('Added message with id = %s', id)
+  });
+});

@@ -4,7 +4,7 @@ body {
   background-position: top center;
   background-color: #9cd2d4;
   background-image: url("background.png");
-  overflow: hidden;
+/*  overflow: hidden; */
 }
 
 h1 {
@@ -14,7 +14,7 @@ h1 {
 
 .question{
   text-align: center;
-  position: fixed;
+  position: absolute;
   top: 47%;
   left: 50%;
   font-size: 30px;
@@ -24,7 +24,7 @@ h1 {
 
 .form{
 
-  position: fixed;
+  position: absolute;
   top: 54%;
   left: 50%;
   transform: translate(-50%, 0);
@@ -37,7 +37,6 @@ h1 {
 }
 
 #person{
-
   margin: 10px 0;
   display:block;
 }
@@ -85,7 +84,7 @@ h1 {
 }
 
 #footer{
-  position:fixed;
+  position:absolute;
   left:0%;
   bottom:0%;
   height:50px;

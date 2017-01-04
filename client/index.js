@@ -1,6 +1,18 @@
 function addDivs(){
   var dummy = "<input class = \"field\" type=\"text\" name = \"name\"/>"+
 "<input class = \"field\" type = \"text\" name = \"email\" />"+
+  "<br />"+
+  "<input class = \"field\" type=\"text\" name = \"name\"/>"+
+"<input class = \"field\" type = \"text\" name = \"email\" />"+
+  "<br />"+
+  "<input class = \"field\" type=\"text\" name = \"name\"/>"+
+"<input class = \"field\" type = \"text\" name = \"email\" />"+
+  "<br />"+
+  "<input class = \"field\" type=\"text\" name = \"name\"/>"+
+"<input class = \"field\" type = \"text\" name = \"email\" />"+
+  "<br />"+
+  "<input class = \"field\" type=\"text\" name = \"name\"/>"+
+"<input class = \"field\" type = \"text\" name = \"email\" />"+
   "<br />";
   document.getElementById('person').innerHTML+=dummy;
 }

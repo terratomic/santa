@@ -1,7 +1,8 @@
 body {
   width: 100%;
   background-position: top center;
-  background-color: #9cd2d4;
+  background-repeat: no-repeat;
+  background-color: #edeef0;
   background-image: url("background.png");
 /*  overflow: hidden; */
 overflow-x: hidden;

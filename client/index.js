@@ -14,7 +14,7 @@ function addDivs(){
   "<input class = \"field\" type=\"text\" name = \"name\"/>"+
 "<input class = \"field\" type = \"text\" name = \"email\" />"+
   "<br />";
-  
+
   document.getElementById('person').innerHTML+=dummy;
 }
 

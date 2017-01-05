@@ -142,10 +142,23 @@ mongodb.MongoClient.connect(con, function(err, db) {
       task_is_running1 = false;
     }
   }, time_interval_in_milliseconds);
-});
+
 
 //------------------Emails to people
 
 
+//------------------SMPT email server
+
 
 //------------------Periodic polling 2
+//TODO
+var task_is_running2 = false;
+setInterval(function(){
+    if(!task_is_running2){
+        task_is_running2 = true;
+      /*  do_something(42, function(result){
+            task_is_running2 = false;
+        }); */
+    }
+}, time_interval_in_milliseconds);
+});

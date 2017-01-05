@@ -44,39 +44,39 @@ mongodb.MongoClient.connect(con, function(err, db) {
   myQueue = mongoDbQueue(db, 'queue');
   console.log("Database connection ready");
 
-// ROUTES FOR OUR API
-// =============================================================================
-var router = express.Router();              // get an instance of the express Router
+  // ROUTES FOR OUR API
+  // =============================================================================
+  var router = express.Router();              // get an instance of the express Router
 
-// middleware to use for all requests
-router.use(function(req, res, next) {
-  // do logging
-  console.log('Something is happening.');
-  next(); // make sure we go to the next routes and don't stop here
-});
+  // middleware to use for all requests
+  router.use(function(req, res, next) {
+    // do logging
+    console.log('Something is happening.');
+    next(); // make sure we go to the next routes and don't stop here
+  });
 
 
 
-// START THE SERVER
-// =============================================================================
-app.listen(port,function(){
-  console.log('Server running at '+port);
-});
-console.log('Magic happens on port ' + port);
+  // START THE SERVER
+  // =============================================================================
+  app.listen(port,function(){
+    console.log('Server running at '+port);
+  });
+  console.log('Magic happens on port ' + port);
 
-//--------------------------SMPT EMAIL SERVER-----------------------------
-/*
-var nodemailer = require('nodemailer');
+  //--------------------------SMPT EMAIL SERVER-----------------------------
+  /*
+  var nodemailer = require('nodemailer');
 
-// create reusable transporter object using the default SMTP transport
-var transporter = nodemailer.createTransport('smtps://user%40gmail.com:pass@smtp.gmail.com');
+  // create reusable transporter object using the default SMTP transport
+  var transporter = nodemailer.createTransport('smtps://user%40gmail.com:pass@smtp.gmail.com');
 
-// send mail with defined transport object
+  // send mail with defined transport object
 
-function sendMail(){
-transporter.sendMail(mailOptions, function(error, info){
-if(error){
-return console.log(error);
+  function sendMail(){
+  transporter.sendMail(mailOptions, function(error, info){
+  if(error){
+  return console.log(error);
 }
 console.log('Message sent: ' + info.response);
 });
@@ -127,12 +127,17 @@ function pairing(job){
 //------------------Periodic polling 1
 var task_is_running1 = false;
 setInterval(function(){
-    if(!task_is_running1){
-        task_is_running1 = true;
-        do_something(42, function(result){
-            task_is_running1 = false;
+  if(!task_is_running1){
+    task_is_running1 = true;
+    myQueue.get(function(err,msg){
+      if(!err)
+        var job = pairing(msg, function(err){
+          if(!err)
+            myQueue2.add({name: job.name, email:job.email, indexes: job.indexes});
         });
-    }
+    });
+    task_is_running1 = false;
+  }
 }, time_interval_in_miliseconds);
 
 //------------------Periodic polling 2

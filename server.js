@@ -26,7 +26,6 @@ var port = process.env.PORT || 8000;        // set our port
 
 var mongoose   = require('mongoose');
 var Email = require('./models/email');
-var Circle = require('./models/circle');
 
 //========================================Job queue
 var mongodb = require('mongodb');
@@ -131,6 +130,7 @@ mongodb.MongoClient.connect(con, function(err, db) {
                   console.log("id:" + id+ err);
                 }
               });
+              console.log("equeue add");
               eQueue.add({name: job.name, email:job.email, indexes: job.indexes},function(err){
                 if(err)
                 console.log("eQueue error");
@@ -153,72 +153,77 @@ mongodb.MongoClient.connect(con, function(err, db) {
   //------------------Emails to people
 
   function sendEmail(job,onError){
-try{
+    try{
 
-    var num = job.name.length;
+      var num = job.name.length;
 
-    for(i = 0; i < num; i++)
-    {
-      var senderName = job.name[i];
-      var sender = job.email[i];
-      var recipient = job.email[job.indexes[i]];
+      for(i = 0; i < num; i++)
+      {
+        var senderName = job.name[i];
+        var sender = job.email[i];
+        var recipientName = job.name[job.indexes[i]];
+/*
+        // setup e-mail data with unicode symbols
+        var mailOptions = { //TODO CREATE MASTER EMAIL
+          from: String,//'"Fred Foo ?" <foo@blurdybloop.com>', // sender address
+          to: sender,//'bar@blurdybloop.com, baz@blurdybloop.com', // list of receivers
+          subject: 'Santa', // Subject line
+          text: String,//senderName+', Your person is ' + recipientName, // plaintext body
+          html: String // html body
+        };
+*/
+        var mailOptions;
+        //TODO mail options from
+        mailOptions.to = sender;
+        mailOptions.subject = 'santa';
+        mailOptions.text = senderName+', Your person is ' + recipientName;
+        mailOptions.html = '<b>'+mailOptions.text+'</b>';
 
-      // setup e-mail data with unicode symbols
-      var mailOptions = {
-        from: senderName+sender,//'"Fred Foo ?" <foo@blurdybloop.com>', // sender address
-        to: recipient,//'bar@blurdybloop.com, baz@blurdybloop.com', // list of receivers
-        subject: 'Hello ✔', // Subject line
-        text: 'Hello world ?', // plaintext body
-        html: '<b>Hello world ?</b>' // html body
-      };
-
-      console.log(mailOptions);
-      // send mail with defined transport object
-      //        transporter.sendMail(mailOptions, function(error, info){
-      //          if(error){
-      //            return console.log(error);
-      //      }
-      //    console.log('Message sent: ' + info.response);
-      //});
-
-    }
-
-  }catch(e) {
-    onError(e);
-  }
-}
-
-
-//------------------Periodic polling 2
-//TODO
-var task_is_running2 = false;
-setInterval(function(){
-  if(!task_is_running2){
-    task_is_running2 = true;
-    eQueue.get(function(err,msg){
-      if(err)
-      console.log("eQueue get error");
-      else{
-        if(!msg)
-        return;
-        /*console.log(msg);*/
-        sendEmail(msg.payload, function(err){
-          if(err)
-          console.log("perr:" +err);
-          else{
-            console.log("eq acking"+msg.id);
-            eQueue.ack(msg.ack,function(err, id){
-              if(err)
-              {
-                console.log("id:" + id+ err);
-              }
-            });
-          }
-        });
+          console.log(mailOptions);
+          //TODO
+        // send mail with defined transport object
+        //        transporter.sendMail(mailOptions, function(error, info){
+        //          if(error){
+        //            return console.log(error);
+        //      }
+        //    console.log('Message sent: ' + info.response);
+        //});
       }
-    });
-    task_is_running2 = false;
-  }
-}, time_interval_in_milliseconds);
 
+      return;
+    }catch(e) {
+      onError(e);
+    }
+  }
+
+
+  //------------------Periodic polling 2
+  //TODO
+  var task_is_running2 = false;
+  setInterval(function(){
+    if(!task_is_running2){
+      task_is_running2 = true;
+      eQueue.get(function(err,msg){
+        if(err)
+          console.log("eQueue get error");
+        else{
+          if(!msg)
+            return;
+  //        console.log(msg);
+          sendEmail(msg.payload, function(err){
+            if(err)
+              console.log("perr:" +err);
+            else{
+              console.log("eq acking"+msg.id);
+              eQueue.ack(msg.ack,function(err, id){
+                if(err)
+                  console.log("id:" + id+ err);
+              });
+            }
+          });
+        }
+      });
+      task_is_running2 = false;
+    }
+  }, time_interval_in_milliseconds);
 });

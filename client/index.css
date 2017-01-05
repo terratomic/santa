@@ -41,9 +41,8 @@ h1 {
 }
 
 .form{
-
+  margin-top: 65px;
   position: absolute;
-  top: 54%;
   left: 50%;
   transform: translate(-50%, 0);
   overflow:hidden;

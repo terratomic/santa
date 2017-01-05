@@ -43,16 +43,6 @@ mongodb.MongoClient.connect(con, function(err, db) {
   }
   myQueue = mongoDbQueue(db, 'queue');
   console.log("Database connection ready");
-  myQueue.add({name:'Test', email:'test@test.com'}, function(err, id) {
-    // err handling ...
-    if(err){
-      console.log(err);
-    }
-    console.log('Added message with id = %s', id);
-  });
-})
-
-
 
 // ROUTES FOR OUR API
 // =============================================================================
@@ -105,3 +95,47 @@ app.post('/submit',function(req, res) {
     console.log('Added message with id = %s', id);
   });
 });
+
+//------------------Pairing of people
+function pairing(job){
+  var name = job.name;
+
+  var num = name.length;
+
+  //0 means not used, 1 means used
+  var statuses = Array(num).fill(0);
+  var indexes = Array(num).fill(0);
+
+  for(var i = 0; i < num; i++)
+  {
+    var ind = -1;
+    while(ind == -1 || ind == i || statuses[ind]==1)
+    {
+      ind = Math.random()*num;
+    }
+
+    indexes[i]=ind;
+    statuses[ind] =1;
+  }
+
+  job.indexes = indexes;
+
+  return job;
+}
+
+
+//------------------Periodic polling 1
+var task_is_running1 = false;
+setInterval(function(){
+    if(!task_is_running1){
+        task_is_running1 = true;
+        do_something(42, function(result){
+            task_is_running1 = false;
+        });
+    }
+}, time_interval_in_miliseconds);
+
+//------------------Periodic polling 2
+
+
+//------------------Emails to people

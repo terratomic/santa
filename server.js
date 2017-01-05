@@ -37,7 +37,19 @@ var con = 'mongodb://localhost:27017/santa';
 
 var myQueue;
 mongodb.MongoClient.connect(con, function(err, db) {
-  myQueue = mongoDbQueue(db, 'my-queue');
+  if (err) {
+    console.log("Error connecting to daabase ");
+    return;
+  }
+  myQueue = mongoDbQueue(db, 'queue');
+  console.log("Database connection ready");
+  myQueue.add({name:'Test', email:'test@test.com'}, function(err, id) {
+    // err handling ...
+    if(err){
+      console.log(err);
+    }
+    console.log('Added message with id = %s', id);
+  });
 })
 
 

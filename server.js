@@ -8,7 +8,6 @@ var express    = require('express');        // call express
 var http       = require('http');
 var bodyParser = require('body-parser');
 var path       = require('path');
-
 var app        = express();                 // define our app using express
 var server = http.createServer(app);
 
@@ -35,13 +34,15 @@ var mongoDbQueue = require('mongodb-queue');
 
 var con = 'mongodb://localhost:27017/santa';
 
-var myQueue;
 mongodb.MongoClient.connect(con, function(err, db) {
   if (err) {
     console.log("Error connecting to daabase ");
     return;
   }
-  myQueue = mongoDbQueue(db, 'queue');
+
+  var pQueue = mongoDbQueue(db, 'pQueue'); //pairing queue
+  var eQueue = mongoDbQueue(db, 'eQueue'); //emailing queue
+
   console.log("Database connection ready");
 
   // ROUTES FOR OUR API
@@ -64,81 +65,86 @@ mongodb.MongoClient.connect(con, function(err, db) {
   });
   console.log('Magic happens on port ' + port);
 
-  //--------------------------SMPT EMAIL SERVER-----------------------------
-  /*
-  var nodemailer = require('nodemailer');
+  app.post('/submit',function(req, res) {
 
-  // create reusable transporter object using the default SMTP transport
-  var transporter = nodemailer.createTransport('smtps://user%40gmail.com:pass@smtp.gmail.com');
+    console.log(req.body.name);
+    console.log(req.body.email);
 
-  // send mail with defined transport object
-
-  function sendMail(){
-  transporter.sendMail(mailOptions, function(error, info){
-  if(error){
-  return console.log(error);
-}
-console.log('Message sent: ' + info.response);
-});
-}
-*/
-app.post('/submit',function(req, res) {
-
-  console.log(req.body.name);
-  console.log(req.body.email);
-
-  myQueue.add({name:req.body.name, email:req.body.email}, function(err, id) {
-    // err handling ...
-    if(err){
-      console.log(err);
-    }
-    console.log('Added message with id = %s', id);
-  });
-});
-
-//------------------Pairing of people
-function pairing(job){
-  var name = job.name;
-
-  var num = name.length;
-
-  //0 means not used, 1 means used
-  var statuses = Array(num).fill(0);
-  var indexes = Array(num).fill(0);
-
-  for(var i = 0; i < num; i++)
-  {
-    var ind = -1;
-    while(ind == -1 || ind == i || statuses[ind]==1)
-    {
-      ind = Math.random()*num;
-    }
-
-    indexes[i]=ind;
-    statuses[ind] =1;
-  }
-
-  job.indexes = indexes;
-
-  return job;
-}
-
-
-//------------------Periodic polling 1
-var task_is_running1 = false;
-setInterval(function(){
-  if(!task_is_running1){
-    task_is_running1 = true;
-    myQueue.get(function(err,msg){
-      if(!err)
-        var job = pairing(msg, function(err){
-          if(!err)
-            myQueue2.add({name: job.name, email:job.email, indexes: job.indexes});
-        });
+    pQueue.add({name:req.body.name, email:req.body.email}, function(err, id) {
+      // err handling ...
+      if(err){
+        console.log(err);
+      }
+      console.log('Added message with id = %s', id);
     });
-    task_is_running1 = false;
+  });
+
+
+  //------------------Pairing of people
+  function pairing(job,callback){
+    try {
+      var num = job.name.length;
+
+      //0 means not used, 1 means used
+      var statuses = Array(num).fill(0);
+      var indexes = Array(num).fill(0);
+
+      for(var i = 0; i < num; i++)
+      {
+        var ind = -1;
+        while(ind == -1 || ind == i || statuses[ind]==1)
+        ind = Math.random()*num;
+
+        indexes[i]=ind;
+        statuses[ind] =1;
+      }
+
+      job.indexes = indexes;
+      callback(null,job);
+    } catch(e) {
+      callback(e,job);
+    }
   }
-}, time_interval_in_miliseconds);
+
+
+  //------------------Periodic polling 1
+  var task_is_running1 = false;
+  var time_interval_in_milliseconds = 100;
+  setInterval(function(){
+    if(!task_is_running1){
+      task_is_running1 = true;
+      pQueue.get(function(err,msg){
+        if(err)
+        console.log("pQueue get error");
+        else{
+          if(!msg)
+            return;
+          /*console.log(msg);*/
+          pairing(msg.payload, function(err,job){
+            if(err)
+            console.log("perr:" +err);
+            else{
+              console.log("acking"+msg.id);
+              pQueue.ack(msg.ack,function(err, id){
+                if(err)
+                {
+                  console.log("id:" + id+ err);
+                }
+              });
+            eQueue.add({name: job.name, email:job.email, indexes: job.indexes},function(err){
+              if(err)
+              console.log("eQueue error");
+            });
+          }
+          });
+        }
+      });
+      task_is_running1 = false;
+    }
+  }, time_interval_in_milliseconds);
+});
+
+
 
 //------------------Periodic polling 2
 

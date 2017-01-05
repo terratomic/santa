@@ -93,12 +93,12 @@ mongodb.MongoClient.connect(con, function(err, db) {
       {
         var ind = -1;
         while(ind == -1 || ind == i || statuses[ind]==1)
-        ind = Math.random()*num;
+        ind = Math.floor(Math.random()*num);
 
         indexes[i]=ind;
         statuses[ind] =1;
       }
-
+      console.log(indexes);
       job.indexes = indexes;
       callback(null,job);
     } catch(e) {
@@ -144,9 +144,8 @@ mongodb.MongoClient.connect(con, function(err, db) {
   }, time_interval_in_milliseconds);
 });
 
+//------------------Emails to people
+
 
 
 //------------------Periodic polling 2
-
-
-//------------------Emails to people

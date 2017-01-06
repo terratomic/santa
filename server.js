@@ -22,7 +22,7 @@ app.get(function (req, res) {
   res.render('client/index.html', {});
 });
 
-var port = process.env.PORT || 8000;        // set our port
+var port = process.env.PORT || 9000;        // set our port
 
 var mongoose   = require('mongoose');
 var Email = require('./models/email');
@@ -140,8 +140,16 @@ mongodb.MongoClient.connect(con, function(err, db) {
   var nodemailer = require('nodemailer');
 
   // create reusable transporter object using the default SMTP transport
-  var transporter = nodemailer.createTransport(
-    'smtp://localhost');
+  var smtpConfig = {
+     host: "localhost",
+     secure: false, // Use  SSL
+     port: 25,
+     tls: {
+         rejectUnauthorized: false
+     }
+  };
+  var transporter = nodemailer.createTransport(smtpConfig);
+    //'smtp://localhost');
 
     //------------------Emails to people
 

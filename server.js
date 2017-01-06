@@ -71,6 +71,7 @@ mongodb.MongoClient.connect(con, function(err, db) {
         console.log(err);
       }
     });
+    res.send('POST to /submit');
   });
 
 

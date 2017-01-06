@@ -141,73 +141,73 @@ mongodb.MongoClient.connect(con, function(err, db) {
 
   // create reusable transporter object using the default SMTP transport
   var transporter = nodemailer.createTransport(
-    'smtps://user%40gmail.com:pass@smtp.gmail.com');
+    'smtp://localhost');
 
-  //------------------Emails to people
+    //------------------Emails to people
 
-  function sendEmail(job,callback){
-    try{
+    function sendEmail(job,callback){
+      try{
 
-      var num = job.name.length;
+        var num = job.name.length;
 
-      for(i = 0; i < num; i++)
-      {
-        var senderName = job.name[i];
-        var sender = job.email[i];
-        var recipientName = job.name[job.indexes[i]];
+        for(i = 0; i < num; i++)
+        {
+          var senderName = job.name[i];
+          var sender = job.email[i];
+          var recipientName = job.name[job.indexes[i]];
 
-        var mailOptions ={};
-        //TODO mail options from
-        mailOptions.to = sender;
-        mailOptions.subject = 'santa';
-        mailOptions.text = senderName+', Your person is ' + recipientName;
-        mailOptions.html = '<b>'+mailOptions.text+'</b>';
+          var mailOptions ={};
+          mailOptions.from = 'no-reply@mail.terratomic.com';
+          mailOptions.to = sender;
+          mailOptions.subject = 'santa';
+          mailOptions.text = senderName+', Your person is ' + recipientName;
+          mailOptions.html = '<b>'+mailOptions.text+'</b>';
 
-        console.log(mailOptions);
-        //TODO
-        //send mail with defined transport object
-                transporter.sendMail(mailOptions, function(error, info){
-                  if(error){
-                    return console.log(error);
-              }
-            console.log('Message sent: ' + info.response);
-        });
-      }
-
-      callback(null);
-
-    }catch(e) {
-      callback(e);
-    }
-  }
-
-
-  //------------------Periodic polling 2
-  var task_is_running2 = false;
-  setInterval(function(){
-    if(!task_is_running2){
-      task_is_running2 = true;
-      eQueue.get(function(err,msg){
-        if(err)
-        console.log("eQueue get error");
-        else{
-          if(!msg)
-          return;
-          //        console.log(msg);
-          sendEmail(msg.payload, function(err){
-            if(err)
-            console.log("perr:" +err);
-            else{
-              eQueue.ack(msg.ack,function(err, id){
-                if(err)
-                console.log("id:" + id+ err);
-              });
+          console.log(mailOptions);
+          //TODO
+          //send mail with defined transport object
+          transporter.sendMail(mailOptions, function(error, info){
+            if(error){
+              return console.log(error);
             }
+            console.log('Message sent: ' + info.response);
           });
         }
-      });
-      task_is_running2 = false;
-    }
-  }, time_interval_in_milliseconds);
 
-});
+        callback(null);
+
+      }catch(e) {
+        callback(e);
+      }
+    }
+
+
+    //------------------Periodic polling 2
+    var task_is_running2 = false;
+    setInterval(function(){
+      if(!task_is_running2){
+        task_is_running2 = true;
+        eQueue.get(function(err,msg){
+          if(err)
+          console.log("eQueue get error");
+          else{
+            if(!msg)
+            return;
+            //        console.log(msg);
+            sendEmail(msg.payload, function(err){
+              if(err)
+              console.log("perr:" +err);
+              else{
+                eQueue.ack(msg.ack,function(err, id){
+                  if(err)
+                  console.log("id:" + id+ err);
+                });
+              }
+            });
+          }
+        });
+        task_is_running2 = false;
+      }
+    }, time_interval_in_milliseconds);
+
+  });

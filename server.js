@@ -152,7 +152,7 @@ mongodb.MongoClient.connect(con, function(err, db) {
 
   //------------------Emails to people
 
-  function sendEmail(job,onError){
+  function sendEmail(job,callback){
     try{
 
       var num = job.name.length;
@@ -162,7 +162,7 @@ mongodb.MongoClient.connect(con, function(err, db) {
         var senderName = job.name[i];
         var sender = job.email[i];
         var recipientName = job.name[job.indexes[i]];
-/*
+
         // setup e-mail data with unicode symbols
         var mailOptions = { //TODO CREATE MASTER EMAIL
           from: String,//'"Fred Foo ?" <foo@blurdybloop.com>', // sender address
@@ -171,16 +171,16 @@ mongodb.MongoClient.connect(con, function(err, db) {
           text: String,//senderName+', Your person is ' + recipientName, // plaintext body
           html: String // html body
         };
-*/
+        /*
         var mailOptions;
         //TODO mail options from
         mailOptions.to = sender;
         mailOptions.subject = 'santa';
         mailOptions.text = senderName+', Your person is ' + recipientName;
         mailOptions.html = '<b>'+mailOptions.text+'</b>';
-
-          console.log(mailOptions);
-          //TODO
+        */
+        console.log(mailOptions);
+        //TODO
         // send mail with defined transport object
         //        transporter.sendMail(mailOptions, function(error, info){
         //          if(error){
@@ -190,9 +190,10 @@ mongodb.MongoClient.connect(con, function(err, db) {
         //});
       }
 
+      callback(null);
       return;
     }catch(e) {
-      onError(e);
+      callback(e);
     }
   }
 
@@ -205,19 +206,19 @@ mongodb.MongoClient.connect(con, function(err, db) {
       task_is_running2 = true;
       eQueue.get(function(err,msg){
         if(err)
-          console.log("eQueue get error");
+        console.log("eQueue get error");
         else{
           if(!msg)
-            return;
-  //        console.log(msg);
+          return;
+          //        console.log(msg);
           sendEmail(msg.payload, function(err){
             if(err)
-              console.log("perr:" +err);
+            console.log("perr:" +err);
             else{
               console.log("eq acking"+msg.id);
               eQueue.ack(msg.ack,function(err, id){
                 if(err)
-                  console.log("id:" + id+ err);
+                console.log("id:" + id+ err);
               });
             }
           });

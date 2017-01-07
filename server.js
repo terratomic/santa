@@ -80,6 +80,16 @@ mongodb.MongoClient.connect(con, function(err, db) {
     try {
       var num = job.name.length;
 
+	for(i = 0; i <num ; i++)
+        {
+                if(job.name[i] == '')
+                {
+                        job.name.length = i-1;
+                        num = i-1;
+                        break;
+                }
+        }
+
       //0 means not used, 1 means used
       var statuses = Array(num).fill(0);
       var indexes = Array(num).fill(0);

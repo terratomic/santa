@@ -1,5 +1,5 @@
 # santa
 
-Thanksgiving Break 2016 (to be continued...)
-
-This'll be updated over winter break (right now!) to work as intended.
+Winter Break 2016-2017
+Check it out at terratomic.com/santa
+Todo in future: move to ajax posting

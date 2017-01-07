@@ -84,8 +84,8 @@ mongodb.MongoClient.connect(con, function(err, db) {
         {
                 if(job.name[i] == '')
                 {
-                        job.name.length = i-1;
-                        num = i-1;
+                        job.name.length = i;
+                        num = i;
                         break;
                 }
         }
@@ -113,7 +113,7 @@ mongodb.MongoClient.connect(con, function(err, db) {
 
   //------------------Periodic polling 1
   var task_is_running1 = false;
-  var time_interval_in_milliseconds = 100;
+  var time_interval_in_milliseconds = 50;
   setInterval(function(){
     if(!task_is_running1){
       task_is_running1 = true;
@@ -228,5 +228,16 @@ mongodb.MongoClient.connect(con, function(err, db) {
         task_is_running2 = false;
       }
     }, time_interval_in_milliseconds);
+
+
+	var task_is_running3 = false;
+	setInterval(function(){
+		if(!task_is_running3){
+      pQueue.clean();
+      eQueue.clean();
+      task_is_running3 = false;
+		}
+
+  }, time_interval_in_milliseconds);
 
   });
